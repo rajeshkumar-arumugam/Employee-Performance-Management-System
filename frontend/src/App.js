@@ -18,6 +18,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Employees from './pages/Employees';
 import Goals from './pages/Goals';
+import Reviews from './pages/Reviews';
 
 // Create a client for React Query
 const queryClient = new QueryClient({
@@ -127,6 +128,15 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Goals />
+          </ProtectedRoute>
+        }
+      />
+      
+      <Route
+        path="/reviews"
+        element={
+          <ProtectedRoute>
+            <Reviews />
           </ProtectedRoute>
         }
       />

@@ -10,6 +10,7 @@ const { syncModels, Goal } = require('./models');
 // Import routes
 const authRoutes = require('./routes/auth');
 const goalsRoutes = require('./routes/goals');
+const reviewsRoutes = require('./routes/reviews');
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/goals', goalsRoutes);
+app.use('/api/reviews', reviewsRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {

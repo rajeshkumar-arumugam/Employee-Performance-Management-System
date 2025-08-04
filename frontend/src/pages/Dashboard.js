@@ -36,64 +36,73 @@ const Dashboard = () => {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    // Mock data - replace with actual API calls
-    setStats({
-      totalEmployees: 156,
-      activeEmployees: 142,
-      pendingReviews: 23,
-      completedGoals: 89,
-      goalCompletionRate: 76,
-      averageRating: '4.2',
-      myGoals: 8,
-      myCompletedGoals: 6,
-      myGoalProgress: 75,
-      reviewsReceived: 3,
-      myRating: '4.5',
-      performanceTrend: '+12%',
-    });
-
-    setRecentGoals([
-      {
-        id: 1,
-        title: 'Complete React Training',
-        progress: 85,
-        dueDate: '2024-02-15',
-        status: 'in_progress',
-      },
-      {
-        id: 2,
-        title: 'Improve Code Review Process',
-        progress: 60,
-        dueDate: '2024-02-28',
-        status: 'in_progress',
-      },
-      {
-        id: 3,
-        title: 'Mentor Junior Developers',
-        progress: 100,
-        dueDate: '2024-01-30',
-        status: 'completed',
-      },
-    ]);
-
-    setRecentReviews([
-      {
-        id: 1,
-        reviewer: 'Sarah Johnson',
-        rating: 5,
-        feedback: 'Excellent performance this quarter...',
-        date: '2024-01-15',
-      },
-      {
-        id: 2,
-        reviewer: 'Mike Chen',
-        rating: 4,
-        feedback: 'Great collaboration skills...',
-        date: '2024-01-10',
-      },
-    ]);
-
-    // Role-specific notifications
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem('hrms-token');
+        
+        // Fetch users data
+        const usersResponse = await fetch('http://localhost:5000/api/auth/users', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const usersData = await usersResponse.json();
+        const users = usersData.success ? usersData.data.users : [];
+        
+        // Fetch goals data
+        const goalsResponse = await fetch('http://localhost:5000/api/goals', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const goalsData = await goalsResponse.json();
+        const goals = Array.isArray(goalsData) ? goalsData : [];
+        
+        // Calculate stats
+        const totalEmployees = users.length;
+        const activeEmployees = users.filter(u => u.isActive).length;
+        const completedGoals = goals.filter(g => g.status === 'completed').length;
+        const goalCompletionRate = goals.length > 0 ? Math.round((completedGoals / goals.length) * 100) : 0;
+        
+        // User-specific stats
+        const myGoals = goals.filter(g => g.employeeId === user?.id);
+        const myCompletedGoals = myGoals.filter(g => g.status === 'completed').length;
+        const myGoalProgress = myGoals.length > 0 ? Math.round((myCompletedGoals / myGoals.length) * 100) : 0;
+        
+        setStats({
+          totalEmployees,
+          activeEmployees,
+          pendingReviews: 0, // TODO: Add reviews API
+          completedGoals,
+          goalCompletionRate,
+          averageRating: '4.2', // TODO: Calculate from reviews
+          myGoals: myGoals.length,
+          myCompletedGoals,
+          myGoalProgress,
+          reviewsReceived: 0, // TODO: Add reviews API
+          myRating: '4.5', // TODO: Calculate from reviews
+          performanceTrend: '+12%', // TODO: Calculate trend
+        });
+        
+        // Set recent goals (limit to 3)
+        const recentGoals = user?.role === 'employee' 
+          ? myGoals.slice(0, 3)
+          : goals.slice(0, 3);
+        
+        setRecentGoals(recentGoals.map(goal => ({
+          id: goal.id,
+          title: goal.title,
+          progress: goal.progress || 0,
+          dueDate: goal.dueDate,
+          status: goal.status
+        })));
+        
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      }
+    };
+    
+    if (user) {
+      fetchDashboardData();
+    }
+    
+    // Set notifications (keep as mock for now)
     if (user?.role === 'employee') {
       setNotifications([
         {
@@ -108,18 +117,12 @@ const Dashboard = () => {
           type: 'goal',
           time: '1 day ago',
         },
-        {
-          id: 3,
-          message: 'Team meeting scheduled',
-          type: 'meeting',
-          time: '2 days ago',
-        },
       ]);
     } else {
       setNotifications([
         {
           id: 1,
-          message: '23 performance reviews pending',
+          message: 'Performance reviews pending',
           type: 'review',
           time: '1 hour ago',
         },
@@ -131,7 +134,7 @@ const Dashboard = () => {
         },
       ]);
     }
-  }, []);
+  }, [user]);
 
   const getStatusColor = (status) => {
     switch (status) {
