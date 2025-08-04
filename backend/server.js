@@ -93,6 +93,10 @@ const startServer = async () => {
       { where: { estimated_hours: null } }
     );
     
+    // Sync PerformanceReview model to add new columns
+    const { PerformanceReview } = require('./models');
+    await PerformanceReview.sync({ alter: true });
+    
     // Start server
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);

@@ -106,6 +106,14 @@ const PerformanceReview = sequelize.define('PerformanceReview', {
   reviewedAt: {
     type: DataTypes.DATE,
     allowNull: true
+  },
+  totalScore: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  finalRating: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 }, {
   tableName: 'performance_reviews',

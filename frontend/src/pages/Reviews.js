@@ -183,7 +183,7 @@ const Reviews = () => {
         aiAssessment: reviewData.aiAssessment,
         totalScore,
         finalRating,
-        status: 'completed'
+        status: 'submitted'
       };
 
       const token = localStorage.getItem('hrms-token');

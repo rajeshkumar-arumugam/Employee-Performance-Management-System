@@ -6,7 +6,10 @@ const { authenticate, authorize } = require('../middleware/auth');
 // Get all reviews
 router.get('/', authenticate, async (req, res) => {
   try {
+    const whereClause = req.user.role === 'employee' ? { employeeId: req.user.id } : {};
+    
     const reviews = await PerformanceReview.findAll({
+      where: whereClause,
       include: [
         { model: User, as: 'employee', attributes: ['firstName', 'lastName'] }
       ]
@@ -14,7 +17,8 @@ router.get('/', authenticate, async (req, res) => {
 
     const reviewsWithEmployeeName = reviews.map(review => ({
       ...review.toJSON(),
-      employeeName: `${review.employee.firstName} ${review.employee.lastName}`
+      employeeName: `${review.employee.firstName} ${review.employee.lastName}`,
+      reviewDate: review.submittedAt ? new Date(review.submittedAt).toLocaleDateString() : 'N/A'
     }));
 
     res.json(reviewsWithEmployeeName);
