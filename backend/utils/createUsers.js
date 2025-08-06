@@ -9,7 +9,7 @@ const createUsers = async () => {
     await User.create({
       employeeId: 'ADMIN001',
       email: 'admin@company.com',
-      password: 'admin123456',
+      password: 'test@123',
       firstName: 'System',
       lastName: 'Administrator',
       role: 'admin',
@@ -48,7 +48,7 @@ const createUsers = async () => {
     await User.create({
       employeeId: 'EMP001',
       email: 'john@company.com',
-      password: 'employee123456',
+      password: 'test@123',
       firstName: 'John',
       lastName: 'Doe',
       role: 'employee',
@@ -58,10 +58,10 @@ const createUsers = async () => {
     });
 
     console.log('✅ Users created successfully!');
-    console.log('Admin: admin@company.com / admin123456');
+    console.log('Admin: admin@company.com / test@123');
     console.log('HR: hr@company.com / hr123456');
     console.log('Manager: manager@company.com / manager123456');
-    console.log('Employee: john@company.com / employee123456');
+    console.log('Employee: john@company.com / test@123');
     
     process.exit(0);
   } catch (error) {

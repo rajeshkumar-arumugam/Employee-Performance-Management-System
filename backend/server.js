@@ -44,7 +44,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.get('/health', (req, res) => {
   res.json({
     success: true,
-    message: 'Employee Performance System API is running',
+    message: 'Employee Performance Management System API is running',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV
   });

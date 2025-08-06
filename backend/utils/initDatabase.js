@@ -31,7 +31,7 @@ const initDatabase = async () => {
     const admin = await User.create({
       employeeId: 'ADMIN001',
       email: 'admin@company.com',
-      password: 'admin123456',
+      password: 'test@123',
       firstName: 'System',
       lastName: 'Administrator',
       role: 'admin',
@@ -77,7 +77,7 @@ const initDatabase = async () => {
       {
         employeeId: 'EMP001',
         email: 'john@company.com',
-        password: 'employee123456',
+        password: 'test@123',
         firstName: 'John',
         lastName: 'Doe',
         role: 'employee',
@@ -91,7 +91,7 @@ const initDatabase = async () => {
       {
         employeeId: 'EMP002',
         email: 'jane@company.com',
-        password: 'employee123456',
+        password: 'test@123',
         firstName: 'Jane',
         lastName: 'Smith',
         role: 'employee',
@@ -105,7 +105,7 @@ const initDatabase = async () => {
       {
         employeeId: 'EMP003',
         email: 'bob@company.com',
-        password: 'employee123456',
+        password: 'test@123',
         firstName: 'Bob',
         lastName: 'Wilson',
         role: 'employee',
@@ -119,7 +119,7 @@ const initDatabase = async () => {
       {
         employeeId: 'EMP004',
         email: 'alice@company.com',
-        password: 'employee123456',
+        password: 'test@123',
         firstName: 'Alice',
         lastName: 'Brown',
         role: 'employee',
@@ -356,11 +356,11 @@ const initDatabase = async () => {
 
     console.log('✅ Database initialized successfully!');
     console.log('\n📋 Sample Login Credentials:');
-    console.log('👤 Admin: admin@company.com / admin123456');
+    console.log('👤 Admin: admin@company.com / test@123');
     console.log('👤 HR: hr@company.com / hr123456');
     console.log('👤 Manager: manager@company.com / manager123456');
-    console.log('👤 Employee: john@company.com / employee123456');
-    console.log('👤 Employee: jane@company.com / employee123456');
+    console.log('👤 Employee: john@company.com / test@123');
+    console.log('👤 Employee: jane@company.com / test@123');
     console.log('\n🎯 Sample Data Created:');
     console.log(`📊 Users: ${await User.count()}`);
     console.log(`🎯 Goals: ${await Goal.count()}`);

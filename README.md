@@ -147,10 +147,10 @@ hr-performance-system/
    - Backend API: http://localhost:5000
 
 ### Default Login Credentials
-- **Admin**: admin@company.com / admin123456
+- **Admin**: admin@company.com / test@123
 - **HR**: hr@company.com / hr123456
 - **Manager**: manager@company.com / manager123456
-- **Employee**: john@company.com / employee123456
+- **Employee**: john@company.com / test@123
 
 ## 📊 Key Features Walkthrough
 

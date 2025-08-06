@@ -102,7 +102,7 @@ const Navbar = () => {
           }}
           onClick={() => navigate('/dashboard')}
         >
-          HR Performance System
+          Employee Performance Management System
         </Typography>
 
         <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }}>

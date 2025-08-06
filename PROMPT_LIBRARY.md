@@ -1,4 +1,4 @@
-# HR Performance System - Prompt Library
+# Employee Performance Management System - Prompt Library
 
 This document contains all the prompts and requests used during the development of the HR Performance Management System.
 

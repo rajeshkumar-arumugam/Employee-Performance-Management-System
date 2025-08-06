@@ -161,7 +161,7 @@ const Login = () => {
               <strong>Demo Credentials:</strong>
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Admin: admin@company.com / admin123
+              Admin: admin@company.com / test@123
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Employee: john@company.com / employee123

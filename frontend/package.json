@@ -1,7 +1,7 @@
 {
   "name": "employee-performance-frontend",
   "version": "1.0.0",
-  "description": "Employee Performance System Frontend",
+  "description": "Employee Performance Management System Frontend",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
