@@ -99,6 +99,8 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api
       status: 'draft',
       priority: 'medium',
       progress: 0,
+      quarter: 'Q1',
+      year: new Date().getFullYear(),
     });
     setDialogOpen(true);
   };
@@ -143,13 +145,22 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api
         ? `${API_BASE_URL}/goals/${editingGoal.id}`
         : `${API_BASE_URL}/goals`;
       
+      // Add required fields
+      const submitData = {
+        ...data,
+        employeeId: user?.role === 'employee' ? user.id : 1, // Default to user ID or first employee
+        quarter: 'Q1', // Default quarter
+        year: new Date().getFullYear(), // Current year
+        assignedBy: user.id
+      };
+      
       const response = await fetch(url, {
         method: editingGoal ? 'PUT' : 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(submitData)
       });
       
       if (response.ok) {
@@ -201,7 +212,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api
 
       // Create goals for each target employee
       const promises = targetEmployees.map(employee => 
-        fetch('/goals', {
+        fetch(`${API_BASE_URL}/goals`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -213,10 +224,13 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api
             category: data.category,
             priority: data.priority,
             status: 'active',
-            estimated_hours: parseInt(data.estimatedHours) || 0,
-            start_date: data.startDate,
-            due_date: data.dueDate,
-            employeeId: employee.id
+            estimatedHours: parseInt(data.estimatedHours) || 0,
+            startDate: data.startDate,
+            dueDate: data.dueDate,
+            employeeId: employee.id,
+            quarter: data.quarter,
+            year: parseInt(data.year),
+            assignedBy: user.id
           })
         })
       );
@@ -749,6 +763,45 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api
                 )}
               />
               <Controller
+                name="quarter"
+                control={control}
+                rules={{ required: 'Quarter is required' }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    select
+                    label="Quarter"
+                    error={!!errors.quarter}
+                    helperText={errors.quarter?.message}
+                    fullWidth
+                  >
+                    <MenuItem value="Q1">Q1</MenuItem>
+                    <MenuItem value="Q2">Q2</MenuItem>
+                    <MenuItem value="Q3">Q3</MenuItem>
+                    <MenuItem value="Q4">Q4</MenuItem>
+                  </TextField>
+                )}
+              />
+              <Controller
+                name="year"
+                control={control}
+                rules={{ required: 'Year is required' }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    select
+                    label="Year"
+                    error={!!errors.year}
+                    helperText={errors.year?.message}
+                    fullWidth
+                  >
+                    <MenuItem value={2024}>2024</MenuItem>
+                    <MenuItem value={2025}>2025</MenuItem>
+                    <MenuItem value={2026}>2026</MenuItem>
+                  </TextField>
+                )}
+              />
+              <Controller
                 name="description"
                 control={control}
                 render={({ field }) => (
@@ -1003,7 +1056,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api
                 )}
               />
 
-              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 2 }}>
                 <Controller
                   name="startDate"
                   control={bulkControl}
@@ -1036,6 +1089,49 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api
                       helperText={bulkErrors.dueDate?.message}
                       fullWidth
                     />
+                  )}
+                />
+                
+                <Controller
+                  name="quarter"
+                  control={bulkControl}
+                  rules={{ required: 'Quarter is required' }}
+                  defaultValue="Q1"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      select
+                      label="Quarter"
+                      error={!!bulkErrors.quarter}
+                      helperText={bulkErrors.quarter?.message}
+                      fullWidth
+                    >
+                      <MenuItem value="Q1">Q1</MenuItem>
+                      <MenuItem value="Q2">Q2</MenuItem>
+                      <MenuItem value="Q3">Q3</MenuItem>
+                      <MenuItem value="Q4">Q4</MenuItem>
+                    </TextField>
+                  )}
+                />
+                
+                <Controller
+                  name="year"
+                  control={bulkControl}
+                  rules={{ required: 'Year is required' }}
+                  defaultValue={new Date().getFullYear()}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      select
+                      label="Year"
+                      error={!!bulkErrors.year}
+                      helperText={bulkErrors.year?.message}
+                      fullWidth
+                    >
+                      <MenuItem value={2024}>2024</MenuItem>
+                      <MenuItem value={2025}>2025</MenuItem>
+                      <MenuItem value={2026}>2026</MenuItem>
+                    </TextField>
                   )}
                 />
               </Box>
