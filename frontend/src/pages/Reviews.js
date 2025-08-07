@@ -190,7 +190,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api
       };
 
       const token = localStorage.getItem('hrms-token');
-      const response = await fetch('/reviews', {
+      const response = await fetch(`${API_BASE_URL}/reviews`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
