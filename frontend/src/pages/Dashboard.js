@@ -35,20 +35,24 @@ const Dashboard = () => {
   const [recentReviews, setRecentReviews] = useState([]);
   const [notifications, setNotifications] = useState([]);
 
+  // Configure API_BASE_URL
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         const token = localStorage.getItem('hrms-token');
         
         // Fetch users data
-        const usersResponse = await fetch('http://localhost:5000/api/auth/users', {
+        const usersResponse = await fetch(`${API_BASE_URL}/auth/users`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const usersData = await usersResponse.json();
         const users = usersData.success ? usersData.data.users : [];
         
         // Fetch goals data
-        const goalsResponse = await fetch('http://localhost:5000/api/goals', {
+        const goalsResponse = await fetch(`${API_BASE_URL}/goals`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const goalsData = await goalsResponse.json();

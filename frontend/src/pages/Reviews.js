@@ -41,6 +41,9 @@ const Reviews = () => {
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
 
+   // Configure API_BASE_URL
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
   useEffect(() => {
     fetchReviews();
     fetchEmployees();
@@ -50,7 +53,7 @@ const Reviews = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('hrms-token');
-      const response = await fetch('http://localhost:5000/api/reviews', {
+      const response = await fetch(`${API_BASE_URL}/reviews`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -67,7 +70,7 @@ const Reviews = () => {
   const fetchEmployees = async () => {
     try {
       const token = localStorage.getItem('hrms-token');
-      const response = await fetch('http://localhost:5000/api/auth/users', {
+      const response = await fetch(`${API_BASE_URL}/auth/users`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -187,7 +190,7 @@ const Reviews = () => {
       };
 
       const token = localStorage.getItem('hrms-token');
-      const response = await fetch('http://localhost:5000/api/reviews', {
+      const response = await fetch('/reviews', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

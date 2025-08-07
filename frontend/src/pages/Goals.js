@@ -43,6 +43,9 @@ const Goals = () => {
   const { control: bulkControl, handleSubmit: handleBulkSubmit, reset: resetBulk, formState: { errors: bulkErrors } } = useForm();
   const { control: logControl, handleSubmit: handleLogSubmit, reset: resetLog, formState: { errors: logErrors } } = useForm();
 
+   // Configure API_BASE_URL
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
   useEffect(() => {
     fetchGoals();
   }, [user]);
@@ -51,7 +54,7 @@ const Goals = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('hrms-token');
-      const response = await fetch('http://localhost:5000/api/goals', {
+      const response = await fetch(`${API_BASE_URL}/goals`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -110,7 +113,7 @@ const Goals = () => {
     if (window.confirm('Are you sure you want to delete this goal?')) {
       try {
         const token = localStorage.getItem('hrms-token');
-        const response = await fetch(`http://localhost:5000/api/goals/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/goals/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -137,8 +140,8 @@ const Goals = () => {
     try {
       const token = localStorage.getItem('hrms-token');
       const url = editingGoal 
-        ? `http://localhost:5000/api/goals/${editingGoal.id}`
-        : 'http://localhost:5000/api/goals';
+        ? `${API_BASE_URL}/goals/${editingGoal.id}`
+        : `${API_BASE_URL}/goals`;
       
       const response = await fetch(url, {
         method: editingGoal ? 'PUT' : 'POST',
@@ -198,7 +201,7 @@ const Goals = () => {
 
       // Create goals for each target employee
       const promises = targetEmployees.map(employee => 
-        fetch('http://localhost:5000/api/goals', {
+        fetch('/goals', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -233,8 +236,8 @@ const Goals = () => {
     try {
       const token = localStorage.getItem('hrms-token');
       const url = editingLog 
-        ? `http://localhost:5000/api/goals/time-log/${editingLog.id}`
-        : `http://localhost:5000/api/goals/${selectedGoal.id}/time-log`;
+        ? `${API_BASE_URL}/goals/time-log/${editingLog.id}`
+        : `${API_BASE_URL}/goals/${selectedGoal.id}/time-log`;
       
       const response = await fetch(url, {
         method: editingLog ? 'PUT' : 'POST',
@@ -267,7 +270,7 @@ const Goals = () => {
     if (window.confirm('Are you sure you want to delete this time log?')) {
       try {
         const token = localStorage.getItem('hrms-token');
-        const response = await fetch(`http://localhost:5000/api/goals/time-log/${logId}`, {
+        const response = await fetch(`${API_BASE_URL}/goals/time-log/${logId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`

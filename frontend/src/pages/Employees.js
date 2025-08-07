@@ -52,6 +52,10 @@ const Employees = () => {
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
 
+
+   /// Configure API_BASE_URL
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -60,7 +64,7 @@ const Employees = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('hrms-token');
-      const response = await fetch('http://localhost:5000/api/auth/users', {
+      const response = await fetch(`${API_BASE_URL}/auth/users`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -109,7 +113,7 @@ const Employees = () => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
       try {
         const token = localStorage.getItem('hrms-token');
-        const response = await fetch(`http://localhost:5000/api/auth/users/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/auth/users/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -164,7 +168,7 @@ const Employees = () => {
       
       if (editingEmployee) {
         // Update employee
-        const response = await fetch(`http://localhost:5000/api/auth/users/${editingEmployee.id}`, {
+        const response = await fetch(`${API_BASE_URL}/auth/users/${editingEmployee.id}`, {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -186,7 +190,7 @@ const Employees = () => {
         }
       } else {
         // Add new employee
-        const response = await fetch('http://localhost:5000/api/auth/register', {
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
